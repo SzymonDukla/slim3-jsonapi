@@ -1,39 +1,28 @@
 <?php
-/**
- * Author: Nil Portugués Calderó <contact@nilportugues.com>
- * Date: 4/01/16
- * Time: 0:06.
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
 
-namespace NilPortugues\Laravel5\JsonApi\Providers;
+namespace CarterZenk\Slim3\JsonApi\Providers;
 
-use Illuminate\Support\Facades\Cache;
+use Interop\Container\ContainerInterface;
 use NilPortugues\Api\JsonApi\JsonApiTransformer;
+use CarterZenk\Slim3\JsonApi\JsonApiSerializer;
+use CarterZenk\Slim3\JsonApi\Mapper\Mapper;
 use NilPortugues\Api\Mapping\Mapping;
-use NilPortugues\Laravel5\JsonApi\JsonApiSerializer;
-use NilPortugues\Laravel5\JsonApi\Mapper\Mapper;
 use ReflectionClass;
 
-/**
- * Class Laravel51Provider.
- */
-class Laravel51Provider
+class Slim3Provider
 {
     public function provider()
     {
-        return function ($app) {
-            if (config('app.debug')) {
-                $parsedRoutes = $this->parseRoutes(new Mapper($app['config']->get('jsonapi')));
-            } else {
-                $parsedRoutes = Cache::rememberForever('jsonapi.mapping', function () use ($app) {
-                    return $this->parseRoutes(new Mapper($app['config']->get('jsonapi')));
-                });
-            }
+        return function (ContainerInterface $container) {
+            $mappings = $container->get('settings')['jsonapi']['mappings'];
 
-            return new JsonApiSerializer(new JsonApiTransformer($parsedRoutes));
+            $mapper = new Mapper($mappings);
+
+            $parsedRoutes = $this->parseRoutes($mapper);
+
+            $transformer = new JsonApiTransformer($parsedRoutes);
+
+            return new JsonApiSerializer($transformer);
         };
     }
 
@@ -45,7 +34,7 @@ class Laravel51Provider
     protected function parseRoutes(Mapper $mapper)
     {
         foreach ($mapper->getClassMap() as &$mapping) {
-            $mappingClass = new \ReflectionClass($mapping);
+            $mappingClass = new ReflectionClass($mapping);
 
             $this->setUrlWithReflection($mapping, $mappingClass, 'resourceUrlPattern');
             $this->setUrlWithReflection($mapping, $mappingClass, 'selfUrl');
@@ -126,3 +115,4 @@ class Laravel51Provider
         return $route;
     }
 }
+

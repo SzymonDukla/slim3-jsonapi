@@ -1,25 +1,14 @@
 <?php
-/**
- * Author: Nil Portugués Calderó <contact@nilportugues.com>
- * Date: 13/01/16
- * Time: 19:56.
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
 
-namespace NilPortugues\Laravel5\JsonApi\Controller;
+namespace CarterZenk\Slim3\JsonApi\Controller;
 
-use Carbon\Carbon;
-use Illuminate\Container\Container;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
-use NilPortugues\Laravel5\JsonApi\Actions\PatchResource;
-use NilPortugues\Laravel5\JsonApi\Actions\PutResource;
+use NilPortugues\Api\JsonApi\Http\Request\Request;
 use NilPortugues\Api\JsonApi\Server\Errors\Error;
 use NilPortugues\Api\JsonApi\Server\Errors\ErrorBag;
-use NilPortugues\Laravel5\JsonApi\Eloquent\EloquentHelper;
-use NilPortugues\Laravel5\JsonApi\JsonApiSerializer;
+use CarterZenk\Slim3\JsonApi\Eloquent\EloquentHelper;
+use CarterZenk\Slim3\JsonApi\JsonApiSerializer;
+use Slim\Router;
 use Symfony\Component\HttpFoundation\Response;
 
 trait JsonApiTrait
@@ -30,16 +19,40 @@ trait JsonApiTrait
     protected $serializer;
 
     /**
+     * @var Router
+     */
+    protected $router;
+
+    /**
+     * @var EloquentHelper
+     */
+    protected $eloquentHelper;
+
+    /**
      * @var int
      */
     protected $pageSize = 10;
 
     /**
      * @param JsonApiSerializer $serializer
+     * @param Router $router
+     * @param EloquentHelper $eloquentHelper
      */
-    public function __construct(JsonApiSerializer $serializer)
+    public function __construct(JsonApiSerializer $serializer, Router $router, EloquentHelper $eloquentHelper)
     {
         $this->serializer = $serializer;
+        $this->router = $router;
+        $this->eloquentHelper = $eloquentHelper;
+    }
+
+    /**
+     * @param Response $response
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    protected function addHeaders(Response $response)
+    {
+        return $response;
     }
 
     /**
@@ -49,7 +62,7 @@ trait JsonApiTrait
      */
     protected function uriGenerator($controllerAction)
     {
-        return Container::getInstance()->make('url')->action($controllerAction, [], true);
+        return $this->router->relativePathFor($controllerAction, [], true);
     }
 
     /**
@@ -77,24 +90,15 @@ trait JsonApiTrait
     /**
      * Returns a list of resources based on pagination criteria.
      *
+     * @param Request $request
      * @return callable
      * @codeCoverageIgnore
      */
-    protected function listResourceCallable()
+    protected function listResourceCallable(Request $request)
     {
-        return function () {
-            return EloquentHelper::paginate($this->serializer, $this->getDataModel()->query(), $this->pageSize)->get();
+        return function () use ($request) {
+            return $this->eloquentHelper->paginate($request, $this->serializer, $this->getDataModel()->query(), $this->pageSize)->get();
         };
-    }
-
-    /**
-     * @param Response $response
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    protected function addHeaders(Response $response)
-    {
-        return $response;
     }
 
     /**
@@ -147,28 +151,6 @@ trait JsonApiTrait
     }
 
     /**
-     * @param Request $request
-     * @param $id
-     * @return Response
-     */
-    protected function putAction(Request $request, $id)
-    {
-        $find = $this->findResourceCallable($id);
-        $update = $this->updateResourceCallable();
-
-        $resource = new PutResource($this->serializer);
-        $model = $this->getDataModel();
-        $data = (array) $request->get('data');
-        if (array_key_exists('attributes', $data) && $model->timestamps) {
-            $data['attributes'][$model::UPDATED_AT] = Carbon::now()->toDateTimeString();
-        }
-
-        return $this->addHeaders(
-            $resource->get($id, $data, get_class($model), $find, $update)
-        );
-    }
-
-    /**
      * @return callable
      * @codeCoverageIgnore
      */
@@ -185,29 +167,6 @@ trait JsonApiTrait
                 throw $e;
             }
         };
-    }
-
-    /**
-     * @param Request $request
-     * @param $id
-     * @return Response
-     */
-    protected function patchAction(Request $request, $id)
-    {
-        $find = $this->findResourceCallable($id);
-        $update = $this->updateResourceCallable();
-
-        $resource = new PatchResource($this->serializer);
-
-        $model = $this->getDataModel();
-        $data = (array) $request->get('data');
-        if (array_key_exists('attributes', $data) && $model->timestamps) {
-            $data['attributes'][$model::UPDATED_AT] = Carbon::now()->toDateTimeString();
-        }
-        
-        return $this->addHeaders(
-            $resource->get($id, $data, get_class($model), $find, $update)
-        );
     }
 
     /**

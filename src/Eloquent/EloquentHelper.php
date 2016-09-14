@@ -1,41 +1,31 @@
 <?php
-/**
- * Author: Nil Portugués Calderó <contact@nilportugues.com>
- * Date: 11/27/15
- * Time: 7:47 PM.
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
 
-namespace NilPortugues\Laravel5\JsonApi\Eloquent;
+namespace CarterZenk\Slim3\JsonApi\Eloquent;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use NilPortugues\Api\JsonApi\Http\Factory\RequestFactory;
-use NilPortugues\Laravel5\JsonApi\JsonApiSerializer;
+use NilPortugues\Api\JsonApi\Http\Request\Request;
+use CarterZenk\Slim3\JsonApi\JsonApiSerializer;
 
 /**
  * Class EloquentHelper.
  */
-trait EloquentHelper
+class EloquentHelper
 {
     /**
+     * @param Request $request
      * @param JsonApiSerializer $serializer
-     * @param Builder           $builder
-     * @param int               $pageSize
-     *
+     * @param Builder $builder
+     * @param int $pageSize
      * @return Builder
      */
-    public static function paginate(JsonApiSerializer $serializer, Builder $builder, $pageSize = null)
+    public function paginate(Request $request, JsonApiSerializer $serializer, Builder $builder, $pageSize = null)
     {
-        self::sort($serializer, $builder, $builder->getModel());
-
-        $request = RequestFactory::create();
+        $this->sort($request, $serializer, $builder, $builder->getModel());
 
         $builder->paginate(
             $request->getPage()->size() ?: $pageSize,
-            self::columns($serializer, $request->getFields()->get()),
+            $this->columns($serializer, $request->getFields()->get()),
             'page',
             $request->getPage()->number()
         );
@@ -44,16 +34,16 @@ trait EloquentHelper
     }
 
     /**
+     * @param Request $request
      * @param JsonApiSerializer $serializer
-     * @param Builder           $builder
-     * @param Model             $model
-     *
+     * @param Builder $builder
+     * @param Model $model
      * @return Builder
      */
-    protected static function sort(JsonApiSerializer $serializer, Builder $builder, Model $model)
+    protected function sort(Request $request, JsonApiSerializer $serializer, Builder $builder, Model $model)
     {
         $mapping = $serializer->getTransformer()->getMappingByClassName(get_class($model));
-        $sorts = RequestFactory::create()->getSort()->sorting();
+        $sorts = $request->getSort()->sorting();
 
         if (!empty($sorts)) {
             $aliased = $mapping->getAliasedProperties();
@@ -75,7 +65,7 @@ trait EloquentHelper
      *
      * @return array
      */
-    protected static function columns(JsonApiSerializer $serializer, array $fields)
+    protected function columns(JsonApiSerializer $serializer, array $fields)
     {
         $filterColumns = [];
 

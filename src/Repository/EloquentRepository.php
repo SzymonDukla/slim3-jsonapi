@@ -1,14 +1,6 @@
 <?php
-/**
- * Author: Nil Portugués Calderó <contact@nilportugues.com>
- * Date: 11/02/16
- * Time: 23:03.
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
 
-namespace NilPortugues\Laravel5\JsonApi\Repository;
+namespace CarterZenk\Slim3\JsonApi\Repository;
 
 use Illuminate\Database\Eloquent\Model;
 use NilPortugues\Foundation\Infrastructure\Model\Repository\Eloquent\EloquentRepository as Repository;
@@ -30,6 +22,7 @@ class EloquentRepository extends Repository
      */
     public function __construct(Model $model)
     {
+        parent::__construct();
         $this->modelClass = get_class($model);
     }
 

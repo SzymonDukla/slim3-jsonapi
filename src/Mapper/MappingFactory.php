@@ -8,10 +8,10 @@
  * file that was distributed with this source code.
  */
 
-namespace NilPortugues\Laravel5\JsonApi\Mapper;
+namespace CarterZenk\Slim3\JsonApi\Mapper;
 
+use Illuminate\Database\Capsule\Manager;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Schema;
 use ReflectionClass;
 
 /**
@@ -36,7 +36,7 @@ class MappingFactory extends \NilPortugues\Api\Mapping\MappingFactory
             $value = $reflection->newInstanceWithoutConstructor();
 
             if (\is_subclass_of($value, Model::class, true)) {
-                $attributes = Schema::getColumnListing($value->getTable());
+                $attributes = Manager::schema()->getColumnListing($value->getTable());
 
                 self::$eloquentClasses[$className] = $attributes;
             }
