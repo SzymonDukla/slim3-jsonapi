@@ -70,7 +70,8 @@ trait JsonApiTrait
     {
         $controllerReflection = new \ReflectionMethod($controllerAction);
         $controllerName = $controllerReflection->getDeclaringClass()->getShortName();
-        return $this->router->getNamedRoute($controllerName);
+        $routeName = substr(strtolower($controllerName), 0, 10);
+        return $this->router->getNamedRoute($routeName);
     }
 
     /**
