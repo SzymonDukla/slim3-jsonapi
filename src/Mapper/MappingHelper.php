@@ -12,7 +12,7 @@ class MappingHelper
      *
      * @return Mapper
      */
-    protected function parseRoutes(Mapper $mapper)
+    public function parseRoutes(Mapper $mapper)
     {
         foreach ($mapper->getClassMap() as &$mapping) {
             $mappingClass = new ReflectionClass($mapping);
