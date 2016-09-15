@@ -12,7 +12,7 @@ use NilPortugues\Api\JsonApi\Server\Actions\PatchResource;
 use NilPortugues\Api\JsonApi\Server\Actions\PutResource;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Symfony\Component\HttpFoundation\Response;
+use Slim\Http\Response;
 
 abstract class JsonApiController
 {
@@ -45,10 +45,10 @@ abstract class JsonApiController
         $totalAmount = $this->totalAmountResourceCallable();
         $results = $this->listResourceCallable($apiRequest);
 
-        $controllerAction = '\\'.get_called_class().'@index';
-        $uri = $this->uriGenerator($controllerAction);
+        $symfonyResponse = $resource->get($totalAmount, $results, $request->getUri(), get_class($this->getDataModel()));
+        $slimResponse = $this->getSlimResponse($symfonyResponse);
 
-        return $this->addHeaders($resource->get($totalAmount, $results, $uri, get_class($this->getDataModel())));
+        return $this->addHeaders($slimResponse);
     }
 
     /**
@@ -71,7 +71,10 @@ abstract class JsonApiController
 
         $find = $this->findResourceCallable($args['id']);
 
-        return $this->addHeaders($resource->get($args['id'], get_class($this->getDataModel()), $find));
+        $symfonyResponse = $resource->get($args['id'], get_class($this->getDataModel()), $find);
+        $slimResponse = $this->getSlimResponse($symfonyResponse);
+
+        return $this->addHeaders($slimResponse);
     }
 
     /**
@@ -92,9 +95,10 @@ abstract class JsonApiController
             $data['attributes'][$model::UPDATED_AT] = Carbon::now()->toDateTimeString();
         }
 
-        return $this->addHeaders(
-            $resource->get($data, get_class($this->getDataModel()), $createResource)
-        );
+        $symfonyResponse = $resource->get($data, get_class($this->getDataModel()), $createResource);
+        $slimResponse = $this->getSlimResponse($symfonyResponse);
+
+        return $this->addHeaders($slimResponse);
     }
 
     /**
@@ -115,9 +119,10 @@ abstract class JsonApiController
             $data['attributes'][$model::UPDATED_AT] = Carbon::now()->toDateTimeString();
         }
 
-        return $this->addHeaders(
-            $resource->get($args['id'], $data, get_class($model), $find, $update)
-        );
+        $symfonyResponse = $resource->get($args['id'], $data, get_class($model), $find, $update);
+        $slimResponse = $this->getSlimResponse($symfonyResponse);
+
+        return $this->addHeaders($slimResponse);
     }
 
     /**
@@ -139,9 +144,10 @@ abstract class JsonApiController
             $data['attributes'][$model::UPDATED_AT] = Carbon::now()->toDateTimeString();
         }
 
-        return $this->addHeaders(
-            $resource->get($args['id'], $data, get_class($model), $find, $update)
-        );
+        $symfonyResponse = $resource->get($args['id'], $data, get_class($model), $find, $update);
+        $slimResponse = $this->getSlimResponse($symfonyResponse);
+
+        return $this->addHeaders($slimResponse);
     }
 
     /**
@@ -159,7 +165,10 @@ abstract class JsonApiController
 
         $resource = new DeleteResource($this->serializer);
 
-        return $this->addHeaders($resource->get($args['id'], get_class($this->getDataModel()), $find, $delete));
+        $symfonyResponse = $resource->get($args['id'], get_class($this->getDataModel()), $find, $delete);
+        $slimResponse = $this->getSlimResponse($symfonyResponse);
+
+        return $this->addHeaders($slimResponse);
     }
 
 }

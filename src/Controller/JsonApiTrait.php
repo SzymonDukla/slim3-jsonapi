@@ -50,7 +50,7 @@ trait JsonApiTrait
      * @param SymfonyResponse $response
      * @return SlimResponse
      */
-    protected function addHeaders(SymfonyResponse $response)
+    protected function getSlimResponse(SymfonyResponse $response)
     {
         $newResponse = new SlimResponse();
         $newResponse->write($response->getContent());
@@ -62,16 +62,11 @@ trait JsonApiTrait
     }
 
     /**
-     * @param $controllerAction
-     *
-     * @return mixed
+     * @param SlimResponse $response
+     * @return SlimResponse
      */
-    protected function uriGenerator($controllerAction)
-    {
-        $controllerReflection = new \ReflectionMethod($controllerAction);
-        $controllerName = $controllerReflection->getDeclaringClass()->getShortName();
-        $routeName = substr(strtolower($controllerName), 0, 10);
-        return $this->router->getNamedRoute($routeName);
+    protected function addHeaders(SlimResponse $response){
+        return $response;
     }
 
     /**
