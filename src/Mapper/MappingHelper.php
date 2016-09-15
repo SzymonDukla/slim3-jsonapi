@@ -1,31 +1,12 @@
 <?php
 
-namespace CarterZenk\Slim3\JsonApi\Providers;
+namespace CarterZenk\Slim3\JsonApi\Mapper;
 
-use Interop\Container\ContainerInterface;
-use NilPortugues\Api\JsonApi\JsonApiTransformer;
-use CarterZenk\Slim3\JsonApi\JsonApiSerializer;
-use CarterZenk\Slim3\JsonApi\Mapper\Mapper;
 use NilPortugues\Api\Mapping\Mapping;
 use ReflectionClass;
 
-class Slim3Provider
+class MappingHelper
 {
-    public function provider()
-    {
-        return function (ContainerInterface $container) {
-            $mappings = $container->get('settings')['jsonapi']['mappings'];
-
-            $mapper = new Mapper($mappings);
-
-            $parsedRoutes = $this->parseRoutes($mapper);
-
-            $transformer = new JsonApiTransformer($parsedRoutes);
-
-            return new JsonApiSerializer($transformer);
-        };
-    }
-
     /**
      * @param Mapper $mapper
      *
@@ -115,4 +96,3 @@ class Slim3Provider
         return $route;
     }
 }
-

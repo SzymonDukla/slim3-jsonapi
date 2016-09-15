@@ -10,6 +10,7 @@ use NilPortugues\Api\JsonApi\Server\Actions\GetResource;
 use NilPortugues\Api\JsonApi\Server\Actions\ListResource;
 use NilPortugues\Api\JsonApi\Server\Actions\PatchResource;
 use NilPortugues\Api\JsonApi\Server\Actions\PutResource;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -21,9 +22,11 @@ abstract class JsonApiController
      * Get many resources.
      *
      * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @param array $args
      * @return Response
      */
-    public function indexAction(ServerRequestInterface $request)
+    public function indexAction(ServerRequestInterface $request, ResponseInterface $response, array $args)
     {
         $apiRequest = new Request($request);
 
@@ -52,10 +55,11 @@ abstract class JsonApiController
      * Get single resource.
      *
      * @param ServerRequestInterface $request
-     * @param $id
+     * @param ResponseInterface $response
+     * @param array $args
      * @return Response
      */
-    public function showAction(ServerRequestInterface $request, $id)
+    public function showAction(ServerRequestInterface $request, ResponseInterface $response, array $args)
     {
         $apiRequest = new Request($request);
 
@@ -65,16 +69,18 @@ abstract class JsonApiController
             $apiRequest->getIncludedRelationships()
         );
 
-        $find = $this->findResourceCallable($id);
+        $find = $this->findResourceCallable($args['id']);
 
-        return $this->addHeaders($resource->get($id, get_class($this->getDataModel()), $find));
+        return $this->addHeaders($resource->get($args['id'], get_class($this->getDataModel()), $find));
     }
 
     /**
      * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @param array $args
      * @return Response
      */
-    public function createAction(ServerRequestInterface $request)
+    public function createAction(ServerRequestInterface $request, ResponseInterface $response, array $args)
     {
         $createResource = $this->createResourceCallable();
         $resource = new CreateResource($this->serializer);
@@ -93,63 +99,67 @@ abstract class JsonApiController
 
     /**
      * @param ServerRequestInterface $request
-     * @param $id
+     * @param ResponseInterface $response
+     * @param array $args
      * @return Response
      */
-    protected function putAction(ServerRequestInterface $request, $id)
+    protected function putAction(ServerRequestInterface $request, ResponseInterface $response, array $args)
     {
-        $find = $this->findResourceCallable($id);
+        $find = $this->findResourceCallable($args['id']);
         $update = $this->updateResourceCallable();
 
         $resource = new PutResource($this->serializer);
         $model = $this->getDataModel();
-        $data = (array) $request->get('data');
+        $data = (array) $request->getParsedBody()['data'];
         if (array_key_exists('attributes', $data) && $model->timestamps) {
             $data['attributes'][$model::UPDATED_AT] = Carbon::now()->toDateTimeString();
         }
 
         return $this->addHeaders(
-            $resource->get($id, $data, get_class($model), $find, $update)
+            $resource->get($args['id'], $data, get_class($model), $find, $update)
         );
     }
 
     /**
      * @param ServerRequestInterface $request
-     * @param $id
+     * @param ResponseInterface $response
+     * @param array $args
      * @return Response
      */
-    protected function patchAction(ServerRequestInterface $request, $id)
+    protected function patchAction(ServerRequestInterface $request, ResponseInterface $response, array $args)
     {
-        $find = $this->findResourceCallable($id);
+        $find = $this->findResourceCallable($args['id']);
         $update = $this->updateResourceCallable();
 
         $resource = new PatchResource($this->serializer);
 
         $model = $this->getDataModel();
-        $data = (array) $request->ge('data');
+        $data = (array) $request->getParsedBody()['data'];
         if (array_key_exists('attributes', $data) && $model->timestamps) {
             $data['attributes'][$model::UPDATED_AT] = Carbon::now()->toDateTimeString();
         }
 
         return $this->addHeaders(
-            $resource->get($id, $data, get_class($model), $find, $update)
+            $resource->get($args['id'], $data, get_class($model), $find, $update)
         );
     }
 
     /**
-     * @param $id
-     *
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @param array $args
      * @return Response
+     *
      */
-    public function delete($id)
+    public function deleteAction(ServerRequestInterface $request, ResponseInterface $response, array $args)
     {
-        $find = $this->findResourceCallable($id);
+        $find = $this->findResourceCallable($args['id']);
 
-        $delete = $this->deleteResourceCallable($id);
+        $delete = $this->deleteResourceCallable($args['id']);
 
         $resource = new DeleteResource($this->serializer);
 
-        return $this->addHeaders($resource->get($id, get_class($this->getDataModel()), $find, $delete));
+        return $this->addHeaders($resource->get($args['id'], get_class($this->getDataModel()), $find, $delete));
     }
 
 }
