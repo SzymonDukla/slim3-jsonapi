@@ -59,7 +59,7 @@ abstract class JsonApiController
      * @param array $args
      * @return Response
      */
-    public function showAction(ServerRequestInterface $request, ResponseInterface $response, array $args)
+    public function findAction(ServerRequestInterface $request, ResponseInterface $response, array $args)
     {
         $apiRequest = new Request($request);
 
