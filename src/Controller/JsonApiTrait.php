@@ -9,7 +9,8 @@ use NilPortugues\Api\JsonApi\Server\Errors\ErrorBag;
 use CarterZenk\Slim3\JsonApi\Eloquent\EloquentHelper;
 use CarterZenk\Slim3\JsonApi\JsonApiSerializer;
 use Slim\Router;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
+use Slim\Http\Response as SlimResponse;
 
 trait JsonApiTrait
 {
@@ -46,13 +47,18 @@ trait JsonApiTrait
     }
 
     /**
-     * @param Response $response
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @param SymfonyResponse $response
+     * @return SlimResponse
      */
-    protected function addHeaders(Response $response)
+    protected function addHeaders(SymfonyResponse $response)
     {
-        return $response;
+        $newResponse = new SlimResponse();
+        $newResponse->write($response->getContent());
+        $newResponse = $newResponse->withStatus($response->getStatusCode());
+        foreach($response->headers->all() as $key => $value){
+            $newResponse = $newResponse->withHeader($key, $value);
+        }
+        return $newResponse;
     }
 
     /**
