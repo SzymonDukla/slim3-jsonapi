@@ -68,7 +68,9 @@ trait JsonApiTrait
      */
     protected function uriGenerator($controllerAction)
     {
-        return $this->router->relativePathFor($controllerAction, [], true);
+        $controllerReflection = new \ReflectionMethod($controllerAction);
+        $controllerName = $controllerReflection->getDeclaringClass()->getShortName();
+        return $this->router->getNamedRoute($controllerName);
     }
 
     /**
