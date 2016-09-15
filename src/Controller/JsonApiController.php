@@ -44,8 +44,10 @@ abstract class JsonApiController
 
         $totalAmount = $this->totalAmountResourceCallable();
         $results = $this->listResourceCallable($apiRequest);
+        $route = $request->getUri()->getPath();
+        $model = $this->getDataModel();
 
-        $symfonyResponse = $resource->get($totalAmount, $results, $request->getUri(), get_class($this->getDataModel()));
+        $symfonyResponse = $resource->get($totalAmount, $results, $route, get_class($model));
         $slimResponse = $this->getSlimResponse($symfonyResponse);
 
         return $this->addHeaders($slimResponse);
@@ -70,8 +72,9 @@ abstract class JsonApiController
         );
 
         $find = $this->findResourceCallable($args['id']);
+        $model = $this->getDataModel();
 
-        $symfonyResponse = $resource->get($args['id'], get_class($this->getDataModel()), $find);
+        $symfonyResponse = $resource->get($args['id'], get_class($model), $find);
         $slimResponse = $this->getSlimResponse($symfonyResponse);
 
         return $this->addHeaders($slimResponse);
@@ -85,9 +88,9 @@ abstract class JsonApiController
      */
     public function createAction(ServerRequestInterface $request, ResponseInterface $response, array $args)
     {
-        $createResource = $this->createResourceCallable();
         $resource = new CreateResource($this->serializer);
 
+        $createResource = $this->createResourceCallable();
         $model = $this->getDataModel();
         $data = (array) $request->getParsedBody()['data'];
         if (array_key_exists('attributes', $data) && $model->timestamps) {
@@ -95,7 +98,7 @@ abstract class JsonApiController
             $data['attributes'][$model::UPDATED_AT] = Carbon::now()->toDateTimeString();
         }
 
-        $symfonyResponse = $resource->get($data, get_class($this->getDataModel()), $createResource);
+        $symfonyResponse = $resource->get($data, get_class($model), $createResource);
         $slimResponse = $this->getSlimResponse($symfonyResponse);
 
         return $this->addHeaders($slimResponse);
@@ -109,10 +112,10 @@ abstract class JsonApiController
      */
     protected function putAction(ServerRequestInterface $request, ResponseInterface $response, array $args)
     {
+        $resource = new PutResource($this->serializer);
+
         $find = $this->findResourceCallable($args['id']);
         $update = $this->updateResourceCallable();
-
-        $resource = new PutResource($this->serializer);
         $model = $this->getDataModel();
         $data = (array) $request->getParsedBody()['data'];
         if (array_key_exists('attributes', $data) && $model->timestamps) {
@@ -159,13 +162,13 @@ abstract class JsonApiController
      */
     public function deleteAction(ServerRequestInterface $request, ResponseInterface $response, array $args)
     {
-        $find = $this->findResourceCallable($args['id']);
-
-        $delete = $this->deleteResourceCallable($args['id']);
-
         $resource = new DeleteResource($this->serializer);
 
-        $symfonyResponse = $resource->get($args['id'], get_class($this->getDataModel()), $find, $delete);
+        $find = $this->findResourceCallable($args['id']);
+        $delete = $this->deleteResourceCallable($args['id']);
+        $model = $this->getDataModel();
+
+        $symfonyResponse = $resource->get($args['id'], get_class($model), $find, $delete);
         $slimResponse = $this->getSlimResponse($symfonyResponse);
 
         return $this->addHeaders($slimResponse);
