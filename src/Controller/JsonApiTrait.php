@@ -63,7 +63,15 @@ trait JsonApiTrait
 
     protected function getRoute(Request $request)
     {
-        $route = (string) $request->getUri();
+        $uri = $request->getUri();
+
+        $route = $uri->getScheme();
+        $route .= $uri->getHost();
+        if(!empty($uri->getPort())){
+            $route .= ':'.$uri->getPort();
+        }
+        $route .= $uri->getPath();
+
         return $route;
     }
 
