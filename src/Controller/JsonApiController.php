@@ -44,8 +44,7 @@ abstract class JsonApiController
 
         $totalAmount = $this->totalAmountResourceCallable();
         $results = $this->listResourceCallable($apiRequest);
-        $uri = $request->getUri();
-        $route = $uri->getHost().$uri->getPath();
+
         $model = $this->getDataModel();
 
         $symfonyResponse = $resource->get($totalAmount, $results, $route, get_class($model));

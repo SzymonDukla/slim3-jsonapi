@@ -61,6 +61,12 @@ trait JsonApiTrait
         return $newResponse;
     }
 
+    protected function getRoute(Request $request)
+    {
+        $route = (string) $request->getUri();
+        return $route;
+    }
+
     /**
      * @param SlimResponse $response
      * @return SlimResponse
