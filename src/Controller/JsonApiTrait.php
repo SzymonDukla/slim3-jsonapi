@@ -101,7 +101,15 @@ trait JsonApiTrait
     protected function listResourceCallable(Request $request)
     {
         return function () use ($request) {
-            return $this->eloquentHelper->paginate($request, $this->serializer, $this->getDataModel()->query(), $this->pageSize)->get();
+            $filters = [];
+
+            foreach($request->getFilters() as $filterKey => $filterValue) {
+                $filters[] = [$filterKey => $filterValue];
+            }
+
+            $results = $this->getDataModel()->query()->where($filters);
+
+            return $this->eloquentHelper->paginate($request, $this->serializer, $results, $this->pageSize)->get();
         };
     }
 
