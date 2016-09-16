@@ -104,7 +104,7 @@ trait JsonApiTrait
             $filters = [];
 
             foreach($request->getFilters() as $filterKey => $filterValue) {
-                $filters[] = [$filterKey => $filterValue];
+                $filters[] = [$filterKey, '=', $filterValue];
             }
 
             $results = $this->getDataModel()->query()->where($filters);
