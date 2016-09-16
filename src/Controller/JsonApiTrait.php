@@ -8,6 +8,7 @@ use NilPortugues\Api\JsonApi\Server\Errors\Error;
 use NilPortugues\Api\JsonApi\Server\Errors\ErrorBag;
 use CarterZenk\Slim3\JsonApi\Eloquent\EloquentHelper;
 use CarterZenk\Slim3\JsonApi\JsonApiSerializer;
+use Psr\Http\Message\ServerRequestInterface;
 use Slim\Router;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Slim\Http\Response as SlimResponse;
@@ -61,7 +62,7 @@ trait JsonApiTrait
         return $newResponse;
     }
 
-    protected function getRoute(Request $request)
+    protected function getRoute(ServerRequestInterface $request)
     {
         $route = $request->getUri()->getScheme();
         $route .= $request->getUri()->getHost();
@@ -69,7 +70,7 @@ trait JsonApiTrait
         if(!empty($request->getUri()->getPort())){
             $route .= ':'.$request->getUri()->getPort();
         }
-        
+
         $route .= $request->getUri()->getPath();
 
         return $route;

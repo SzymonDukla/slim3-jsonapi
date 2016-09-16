@@ -28,6 +28,7 @@ abstract class JsonApiController
      */
     public function indexAction(ServerRequestInterface $request, ResponseInterface $response, array $args)
     {
+        $route = $this->getRoute($request);
         $apiRequest = new Request($request);
 
         $page = $apiRequest->getPage();
@@ -46,7 +47,6 @@ abstract class JsonApiController
         $results = $this->listResourceCallable($apiRequest);
 
         $model = $this->getDataModel();
-        $route = $this->getRoute($apiRequest);
 
         $symfonyResponse = $resource->get($totalAmount, $results, $route, get_class($model));
         $slimResponse = $this->getSlimResponse($symfonyResponse);
