@@ -22,8 +22,9 @@ class EloquentHelper
     public function paginate(Request $request, JsonApiSerializer $serializer, Builder $builder, $pageSize = null)
     {
         $this->sort($request, $serializer, $builder, $builder->getModel());
+        $filters = $this->extractFilters($request);
 
-        $builder->paginate(
+        $builder->where($filters)->paginate(
             $request->getPage()->size() ?: $pageSize,
             $this->columns($serializer, $request->getFields()->get()),
             'page',
@@ -92,5 +93,16 @@ class EloquentHelper
         }
 
         return (count($filterColumns) > 0) ? $filterColumns : ['*'];
+    }
+
+    protected function extractFilters(Request $request)
+    {
+        $filters = [];
+
+        foreach($request->getFilters() as $filterKey => $filterValue) {
+            $filters[] = [$filterKey, '=', $filterValue];
+        }
+
+        return $filters;
     }
 }
