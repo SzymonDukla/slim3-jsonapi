@@ -12,6 +12,8 @@ namespace CarterZenk\Slim3\JsonApi\Mapper;
 
 use Illuminate\Database\Capsule\Manager;
 use Illuminate\Database\Eloquent\Model;
+use NilPortugues\Api\Mapping\Mapping;
+use NilPortugues\Api\Mapping\MappingException;
 use ReflectionClass;
 
 /**
@@ -43,5 +45,23 @@ class MappingFactory extends \NilPortugues\Api\Mapping\MappingFactory
         }
 
         return (!empty(self::$eloquentClasses[$className])) ? self::$eloquentClasses[$className] : parent::getClassProperties($className);
+    }
+
+    protected static function setRequiredProperties(array &$mappedClass, Mapping $mapping, $className)
+    {
+        if (false === empty($mappedClass[static::REQUIRED_PROPERTIES_KEY])) {
+            $mapping->setRequiredProperties($mappedClass[static::REQUIRED_PROPERTIES_KEY]);
+            foreach ($mapping->getRequiredProperties() as $propertyName) {
+                if (false === \in_array($propertyName, static::getClassProperties($className), true)) {
+                    throw new MappingException(
+                        \sprintf(
+                            'Could not add required property %s in class %s because it does not exist.',
+                            $propertyName,
+                            $className
+                        )
+                    );
+                }
+            }
+        }
     }
 }
