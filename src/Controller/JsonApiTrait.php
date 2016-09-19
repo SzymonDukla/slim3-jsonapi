@@ -3,6 +3,7 @@
 namespace CarterZenk\Slim3\JsonApi\Controller;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use NilPortugues\Api\JsonApi\Http\Request\Request;
 use NilPortugues\Api\JsonApi\Server\Errors\Error;
 use NilPortugues\Api\JsonApi\Server\Errors\ErrorBag;
@@ -13,6 +14,10 @@ use Slim\Router;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Slim\Http\Response as SlimResponse;
 
+/**
+ * Class JsonApiTrait
+ * @package CarterZenk\Slim3\JsonApi\Controller
+ */
 trait JsonApiTrait
 {
     /**
@@ -62,6 +67,10 @@ trait JsonApiTrait
         return $newResponse;
     }
 
+    /**
+     * @param ServerRequestInterface $request
+     * @return string
+     */
     protected function getRoute(ServerRequestInterface $request)
     {
         $route = $request->getUri()->getScheme().'://';
@@ -107,6 +116,14 @@ trait JsonApiTrait
     abstract public function getDataModel();
 
     /**
+     * Returns an Eloquent Query Builder.
+     *
+     * @return Builder
+     */
+    abstract public function getDataModelBuilder();
+
+
+    /**
      * Returns a list of resources based on pagination criteria.
      *
      * @param Request $request
@@ -116,7 +133,7 @@ trait JsonApiTrait
     protected function listResourceCallable(Request $request)
     {
         return function () use ($request) {
-            return $this->eloquentHelper->paginate($request, $this->serializer, $this->getDataModel()->query(), $this->pageSize)->get();
+            return $this->eloquentHelper->paginate($request, $this->serializer, $this->getDataModelBuilder(), $this->pageSize)->get();
         };
     }
 
@@ -130,7 +147,7 @@ trait JsonApiTrait
     {
         return function () use ($id) {
             $idKey = $this->getDataModel()->getKeyName();
-            $model = $this->getDataModel()->query()->where($idKey, $id)->first();
+            $model = $this->getDataModelBuilder()->where($idKey, $id)->first();
 
             return $model;
         };

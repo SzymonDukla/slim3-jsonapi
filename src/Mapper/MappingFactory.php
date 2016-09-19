@@ -47,6 +47,11 @@ class MappingFactory extends \NilPortugues\Api\Mapping\MappingFactory
         return (!empty(self::$eloquentClasses[$className])) ? self::$eloquentClasses[$className] : parent::getClassProperties($className);
     }
 
+    /**
+     * @param array $mappedClass
+     * @param Mapping $mapping
+     * @param $className
+     */
     protected static function setRequiredProperties(array &$mappedClass, Mapping $mapping, $className)
     {
         if (false === empty($mappedClass[static::REQUIRED_PROPERTIES_KEY])) {
