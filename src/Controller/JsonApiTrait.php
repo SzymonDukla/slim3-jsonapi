@@ -214,7 +214,7 @@ trait JsonApiTrait
     {
         return function () use ($id) {
             $idKey = $this->getDataModel()->getKeyName();
-            $model = $this->getDataModel()->query()->where($idKey, $id)->first();
+            $model = $this->getDataModelBuilder()->where($idKey, $id)->first();
 
             return $model->delete();
         };
