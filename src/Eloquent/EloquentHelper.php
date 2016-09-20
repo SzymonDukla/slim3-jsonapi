@@ -100,7 +100,9 @@ class EloquentHelper
         $filters = [];
 
         foreach($request->getFilters() as $filterKey => $filterValue) {
-            $filters[] = [$filterKey, '=', $filterValue];
+            if(!empty($filterValue)){
+                $filters[] = [$filterKey, '=', $filterValue];
+            }
         }
 
         return $filters;
