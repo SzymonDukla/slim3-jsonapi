@@ -1,77 +1,39 @@
 <?php
 
-namespace CarterZenk\Slim3\JsonApi\Controller;
+namespace CarterZenk\Slim\JsonApi\Controller;
 
+use CarterZenk\Slim\JsonApi\Http\Request\Parameters\Fields;
+use CarterZenk\Slim\JsonApi\Http\Request\Parameters\Filter;
+use CarterZenk\Slim\JsonApi\Http\Request\Parameters\Included;
+use CarterZenk\Slim\JsonApi\Http\Request\Parameters\Page;
+use CarterZenk\Slim\JsonApi\Http\Request\Parameters\Sort;
+use CarterZenk\Slim\JsonApi\Http\Request\Request;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use NilPortugues\Api\JsonApi\Http\Request\Request;
 use NilPortugues\Api\JsonApi\Server\Errors\Error;
 use NilPortugues\Api\JsonApi\Server\Errors\ErrorBag;
-use CarterZenk\Slim3\JsonApi\Eloquent\EloquentHelper;
-use CarterZenk\Slim3\JsonApi\JsonApiSerializer;
-use Psr\Http\Message\ServerRequestInterface;
 use Slim\Router;
-use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
-use Slim\Http\Response as SlimResponse;
 
-/**
- * Class JsonApiTrait
- * @package CarterZenk\Slim3\JsonApi\Controller
- */
 trait JsonApiTrait
 {
-    /**
-     * @var JsonApiSerializer
-     */
-    protected $serializer;
-
     /**
      * @var Router
      */
     protected $router;
 
     /**
-     * @var EloquentHelper
-     */
-    protected $eloquentHelper;
-
-    /**
-     * @var int
-     */
-    protected $pageSize = 10;
-
-    /**
-     * @param JsonApiSerializer $serializer
      * @param Router $router
-     * @param EloquentHelper $eloquentHelper
      */
-    public function __construct(JsonApiSerializer $serializer, Router $router, EloquentHelper $eloquentHelper)
+    public function __construct(Router $router)
     {
-        $this->serializer = $serializer;
         $this->router = $router;
-        $this->eloquentHelper = $eloquentHelper;
     }
 
     /**
-     * @param SymfonyResponse $response
-     * @return SlimResponse
-     */
-    protected function getSlimResponse(SymfonyResponse $response)
-    {
-        $newResponse = new SlimResponse();
-        $newResponse->write($response->getContent());
-        $newResponse = $newResponse->withStatus($response->getStatusCode());
-        foreach($response->headers->all() as $key => $value){
-            $newResponse = $newResponse->withHeader($key, $value);
-        }
-        return $newResponse;
-    }
-
-    /**
-     * @param ServerRequestInterface $request
+     * @param Request $request
      * @return string
      */
-    protected function getRoute(ServerRequestInterface $request)
+    protected function getRoute(Request $request)
     {
         $route = $request->getUri()->getScheme().'://';
         $route .= $request->getUri()->getHost();
@@ -86,23 +48,20 @@ trait JsonApiTrait
     }
 
     /**
-     * @param SlimResponse $response
-     * @return SlimResponse
-     */
-    protected function addHeaders(SlimResponse $response){
-        return $response;
-    }
-
-    /**
      * Returns the total number of results available for the current resource.
+     *
+     * @param Filter $filter
+     * @param Page $page
      *
      * @return callable
      * @codeCoverageIgnore
      */
-    protected function totalAmountResourceCallable()
+    protected function totalAmountResourceCallable(Filter $filter, Page $page)
     {
-        return function () {
+        return function () use ($filter, $page) {
             $idKey = $this->getDataModel()->getKeyName();
+
+            // TODO: Implement this function to return the number of results possible with filter and page.
 
             return $this->getDataModelBuilder()->count([$idKey]);
         };
@@ -122,32 +81,61 @@ trait JsonApiTrait
      */
     abstract public function getDataModelBuilder();
 
-
     /**
      * Returns a list of resources based on pagination criteria.
      *
-     * @param Request $request
+     * @param Fields $fields
+     * @param Filter $filter
+     * @param Included $include
+     * @param Page $page
+     * @param Sort $sort
+     *
      * @return callable
      * @codeCoverageIgnore
      */
-    protected function listResourceCallable(Request $request)
+    protected function indexResourceCallable(Fields $fields, Filter $filter, Included $include, Page $page, Sort $sort)
     {
-        return function () use ($request) {
-            return $this->eloquentHelper->paginate($request, $this->serializer, $this->getDataModelBuilder(), $this->pageSize)->get();
+        return function () use ($fields, $filter, $include, $page, $sort) {
+
+            // TODO: Implement the indexResourceCallable method.
+
         };
     }
 
     /**
      * @param $id
+     * @param Fields $fields
+     * @param Included $include
      *
      * @return callable
      * @codeCoverageIgnore
      */
-    protected function findResourceCallable($id)
+    protected function findResourceCallable($id, Fields $fields, Included $include)
     {
-        return function () use ($id) {
+        return function () use ($id, $fields, $include) {
             $idKey = $this->getDataModel()->getKeyName();
             $model = $this->getDataModelBuilder()->where($idKey, $id)->first();
+
+            // TODO: Implement this function to setup the query builder with fields and included.
+
+            return $model;
+        };
+    }
+
+    /**
+     * @param int $id
+     * @param string $relationship
+     *
+     * @return callable
+     * @codeCoverageIgnore
+     */
+    protected function findRelationshipCallable($id, $relationship)
+    {
+        return function () use ($id, $relationship) {
+            $idKey = $this->getDataModel()->getKeyName();
+            $model = $this->getDataModelBuilder()->where($idKey, $id)->first();
+
+            // TODO: Implement this function to first check if the relationship exists, and then return results.
 
             return $model;
         };
@@ -161,10 +149,10 @@ trait JsonApiTrait
      */
     protected function createResourceCallable()
     {
-        return function (array $data, array $values, ErrorBag $errorBag) {
+        return function (array $data, ErrorBag $errorBag) {
             $model = $this->getDataModel()->newInstance();
 
-            foreach ($values as $attribute => $value) {
+            foreach ($data['attributes'] as $attribute => $value) {
                 $model->setAttribute($attribute, $value);
             }
 
@@ -187,17 +175,19 @@ trait JsonApiTrait
     }
 
     /**
+     * @param int $id
+     *
      * @return callable
      * @codeCoverageIgnore
      */
-    protected function updateResourceCallable()
+    protected function updateResourceCallable($id)
     {
-        return function (Model $model, array $data, array $values, ErrorBag $errorBag) {
-            foreach ($values as $attribute => $value) {
-                $model->$attribute = $value;
-            }
+        return function (array $data, ErrorBag $errorBag) use ($id) {
+            $idKey = $this->getDataModel()->getKeyName();
+            $model = $this->getDataModelBuilder()->where($idKey, $id)->first();
+
             try {
-                $model->update();
+                $model->update($data['attributes']);
             } catch (\Exception $e) {
                 $errorBag[] = new Error('update_failed', 'Could not update resource.');
                 throw $e;
@@ -206,17 +196,46 @@ trait JsonApiTrait
     }
 
     /**
-     * @param $id
+     * @param int $id
      *
-     * @return \Closure
+     * @return callable
+     * @codeCoverageIgnore
      */
-    protected function deleteResourceCallable($id)
+    protected function updateRelationshipCallable($id)
     {
-        return function () use ($id) {
+        return function (array $data, ErrorBag $errorBag) use ($id) {
             $idKey = $this->getDataModel()->getKeyName();
             $model = $this->getDataModelBuilder()->where($idKey, $id)->first();
 
-            return $model->delete();
+            // TODO: Set the new foreign key in the model.
+
+            try {
+                $model->update($data['attributes']);
+            } catch (\Exception $e) {
+                $errorBag[] = new Error('update_failed', 'Could not update relationship.');
+                throw $e;
+            }
+        };
+    }
+
+    /**
+     * @param $id
+     *
+     * @return callable
+     * @codeCoverageIgnore
+     */
+    protected function deleteResourceCallable($id)
+    {
+        return function (ErrorBag $errorBag) use ($id) {
+            $idKey = $this->getDataModel()->getKeyName();
+            $model = $this->getDataModelBuilder()->where($idKey, $id)->first();
+
+            try {
+                return $model->delete();
+            } catch (\Exception $e) {
+                $errorBag[] = new Error('delete_failed', 'Could not delete resource.');
+                throw $e;
+            }
         };
     }
 }

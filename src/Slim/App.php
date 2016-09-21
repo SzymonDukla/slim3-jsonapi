@@ -1,6 +1,6 @@
 <?php
 
-namespace CarterZenk\Slim3\JsonApi\Slim;
+namespace CarterZenk\Slim\JsonApi\Slim;
 
 use Illuminate\Container\Container;
 use Illuminate\Database\Capsule\Manager;
