@@ -8,7 +8,6 @@ use CarterZenk\Slim\JsonApi\Http\Response\GetResponse;
 use CarterZenk\Slim\JsonApi\Http\Response\PatchResponse;
 use CarterZenk\Slim\JsonApi\Http\Response\PostResponse;
 use NilPortugues\Api\JsonApi\Server\Errors\ErrorBag;
-use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Response;
 
 abstract class JsonApiController
