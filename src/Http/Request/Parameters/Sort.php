@@ -2,43 +2,47 @@
 
 namespace CarterZenk\Slim\JsonApi\Http\Request\Parameters;
 
-class Sort
+use Neomerx\JsonApi\Contracts\Encoder\Parameters\SortParameterInterface;
+
+class Sort implements SortParameterInterface
 {
-    /**
-     * @var array
-     */
-    protected $sort = [];
+    private $field;
+    private $descending;
 
     /**
-     * @param string $field
-     * @param string $direction
+     * Sort constructor.
+     * @param $sortParameter
      */
-    public function addField($field, $direction)
+    public function __construct($sortParameter)
     {
-        $this->sort[(string) $field] = (string) $direction;
+        $this->field = ltrim($sortParameter, '-');
+        $this->descending = ('-' === $sortParameter[0]) ? true : false;
     }
 
     /**
-     * @return array
+     * Get sort field name.
+     *
+     * @return string
      */
-    public function getSort()
-    {
-        return $this->sort;
+    public function getField() {
+        return $this->field;
     }
 
     /**
-     * @return array
-     */
-    public function getFields()
-    {
-        return array_keys($this->sort);
-    }
-
-    /**
+     * Get true if parameter is ascending.
+     *
      * @return bool
      */
-    public function isEmpty()
-    {
-        return 0 === count($this->sort);
+    public function isAscending() {
+        return !$this->descending;
+    }
+
+    /**
+     * Get true if parameter is descending.
+     *
+     * @return bool
+     */
+    public function isDescending() {
+        return $this->descending;
     }
 }

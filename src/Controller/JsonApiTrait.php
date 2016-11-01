@@ -10,6 +10,7 @@ use CarterZenk\Slim\JsonApi\Http\Request\Parameters\Sort;
 use CarterZenk\Slim\JsonApi\Http\Request\Request;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Neomerx\JsonApi\Contracts\Encoder\EncoderInterface;
 use NilPortugues\Api\JsonApi\Server\Errors\Error;
 use NilPortugues\Api\JsonApi\Server\Errors\ErrorBag;
 use Slim\Router;
@@ -22,11 +23,18 @@ trait JsonApiTrait
     protected $router;
 
     /**
-     * @param Router $router
+     * @var EncoderInterface
      */
-    public function __construct(Router $router)
+    protected $encoder;
+
+    /**
+     * @param Router $router
+     * @param EncoderInterface $encoder
+     */
+    public function __construct(Router $router, EncoderInterface $encoder)
     {
-        $this->router = $router;
+        $this->router  = $router;
+        $this->encoder = $encoder;
     }
 
     /**
@@ -104,19 +112,15 @@ trait JsonApiTrait
 
     /**
      * @param $id
-     * @param Fields $fields
-     * @param Included $include
      *
      * @return callable
      * @codeCoverageIgnore
      */
-    protected function findResourceCallable($id, Fields $fields, Included $include)
+    protected function findResourceCallable($id)
     {
-        return function () use ($id, $fields, $include) {
+        return function () use ($id) {
             $idKey = $this->getDataModel()->getKeyName();
             $model = $this->getDataModelBuilder()->where($idKey, $id)->first();
-
-            // TODO: Implement this function to setup the query builder with fields and included.
 
             return $model;
         };
