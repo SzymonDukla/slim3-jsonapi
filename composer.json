@@ -7,7 +7,8 @@
     "authors": [
         {
             "name": "Szymon Dukla",
-            "email": "hello@szymondukla.com"
+            "email": "hello@szymondukla.com",
+            "role": "Author"
         }
     ],
     "require": {
