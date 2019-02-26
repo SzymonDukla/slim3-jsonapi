@@ -1,5 +1,6 @@
 {
     "name": "szymondukla/slim3-json-api",
+    "version": "2.5.0",
     "type": "library",
     "description": "Slim 3 Eloquent JSON API Transformer Package",
     "keywords": ["slim", "slim3", "eloquent", "json", "api", "jsonapi", "serializer", "transformer", "psr7", "response"],
