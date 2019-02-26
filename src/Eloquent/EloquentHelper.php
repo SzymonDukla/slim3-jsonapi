@@ -1,11 +1,11 @@
 <?php
 
-namespace CarterZenk\Slim3\JsonApi\Eloquent;
+namespace SzymonDukla\Slim3\JsonApi\Eloquent;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use NilPortugues\Api\JsonApi\Http\Request\Request;
-use CarterZenk\Slim3\JsonApi\JsonApiSerializer;
+use SzymonDukla\Slim3\JsonApi\JsonApiSerializer;
 
 /**
  * Class EloquentHelper.

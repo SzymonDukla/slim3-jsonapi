@@ -29,7 +29,7 @@
 Use [Composer](https://getcomposer.org) to install the package:
 
 ```
-composer require carterzenk/slim3-jsonapi
+composer require szymondukla/slim3-jsonapi
 ```
 
 ## Configuration for Slim 3 and Eloquent
@@ -59,16 +59,16 @@ return [
 Open up your dependencies file and add an entry for the JsonApiSerializer, using the mappings you defined in the settings.
 
 ```php
-$container[CarterZenk\Slim3\JsonApi\JsonApiSerializer::class] = function (ContainerInterface $c) {
+$container[SzymonDukla\Slim3\JsonApi\JsonApiSerializer::class] = function (ContainerInterface $c) {
     $mappings = $c->get('settings')['json-api']['mappings'];
 
-    $mapper = new CarterZenk\Slim3\JsonApi\Mapper\Mapper($mappings);
+    $mapper = new SzymonDukla\Slim3\JsonApi\Mapper\Mapper($mappings);
 
-    $mappingHelper = new CarterZenk\Slim3\JsonApi\Mapper\MappingHelper();
+    $mappingHelper = new SzymonDukla\Slim3\JsonApi\Mapper\MappingHelper();
     $parsedRoutes = $mappingHelper->parseRoutes($mapper);
 
     $transformer = new NilPortugues\Api\JsonApi\JsonApiTransformer($parsedRoutes);
 
-    return new CarterZenk\Slim3\JsonApi\JsonApiSerializer($transformer);
+    return new SzymonDukla\Slim3\JsonApi\JsonApiSerializer($transformer);
 };
 ```

@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace CarterZenk\Slim3\JsonApi\Mapper;
+namespace SzymonDukla\Slim3\JsonApi\Mapper;
 
 use Illuminate\Database\Capsule\Manager;
 use Illuminate\Database\Eloquent\Model;

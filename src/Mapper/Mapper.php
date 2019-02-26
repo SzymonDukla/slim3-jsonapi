@@ -1,6 +1,6 @@
 <?php
 
-namespace CarterZenk\Slim3\JsonApi\Mapper;
+namespace SzymonDukla\Slim3\JsonApi\Mapper;
 
 class Mapper extends \NilPortugues\Api\Mapping\Mapper
 {

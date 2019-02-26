@@ -1,14 +1,14 @@
 <?php
 
-namespace CarterZenk\Slim3\JsonApi\Controller;
+namespace SzymonDukla\Slim3\JsonApi\Controller;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use NilPortugues\Api\JsonApi\Http\Request\Request;
 use NilPortugues\Api\JsonApi\Server\Errors\Error;
 use NilPortugues\Api\JsonApi\Server\Errors\ErrorBag;
-use CarterZenk\Slim3\JsonApi\Eloquent\EloquentHelper;
-use CarterZenk\Slim3\JsonApi\JsonApiSerializer;
+use SzymonDukla\Slim3\JsonApi\Eloquent\EloquentHelper;
+use SzymonDukla\Slim3\JsonApi\JsonApiSerializer;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Router;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
@@ -16,7 +16,7 @@ use Slim\Http\Response as SlimResponse;
 
 /**
  * Class JsonApiTrait
- * @package CarterZenk\Slim3\JsonApi\Controller
+ * @package SzymonDukla\Slim3\JsonApi\Controller
  */
 trait JsonApiTrait
 {

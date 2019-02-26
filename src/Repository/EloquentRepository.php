@@ -1,6 +1,6 @@
 <?php
 
-namespace CarterZenk\Slim3\JsonApi\Repository;
+namespace SzymonDukla\Slim3\JsonApi\Repository;
 
 use Illuminate\Database\Eloquent\Model;
 use NilPortugues\Foundation\Infrastructure\Model\Repository\Eloquent\EloquentRepository as Repository;

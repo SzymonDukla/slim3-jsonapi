@@ -1,6 +1,6 @@
 <?php
 
-namespace CarterZenk\Slim3\JsonApi\Controller;
+namespace SzymonDukla\Slim3\JsonApi\Controller;
 
 use Carbon\Carbon;
 use NilPortugues\Api\JsonApi\Http\Request\Request;

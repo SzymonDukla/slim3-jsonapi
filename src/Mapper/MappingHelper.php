@@ -1,6 +1,6 @@
 <?php
 
-namespace CarterZenk\Slim3\JsonApi\Mapper;
+namespace SzymonDukla\Slim3\JsonApi\Mapper;
 
 use NilPortugues\Api\Mapping\Mapping;
 use ReflectionClass;

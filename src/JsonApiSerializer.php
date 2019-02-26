@@ -1,6 +1,6 @@
 <?php
 
-namespace CarterZenk\Slim3\JsonApi;
+namespace SzymonDukla\Slim3\JsonApi;
 
 use NilPortugues\Serializer\Drivers\Eloquent\EloquentDriver;
 use NilPortugues\Api\JsonApi\JsonApiSerializer as Serializer;
