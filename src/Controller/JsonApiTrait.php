@@ -4,9 +4,9 @@ namespace SzymonDukla\Slim3\JsonApi\Controller;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use AmaranthCloud\Api\JsonApi\Http\Request\Request;
-use AmaranthCloud\Api\JsonApi\Server\Errors\Error;
-use AmaranthCloud\Api\JsonApi\Server\Errors\ErrorBag;
+use NilPortugues\Api\JsonApi\Http\Request\Request;
+use NilPortugues\Api\JsonApi\Server\Errors\Error;
+use NilPortugues\Api\JsonApi\Server\Errors\ErrorBag;
 use SzymonDukla\Slim3\JsonApi\Eloquent\EloquentHelper;
 use SzymonDukla\Slim3\JsonApi\JsonApiSerializer;
 use Psr\Http\Message\ServerRequestInterface;

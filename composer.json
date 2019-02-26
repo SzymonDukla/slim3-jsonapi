@@ -1,5 +1,5 @@
 {
-    "name": "szymondukla/slim3-json-api",
+    "name": "szymondukla/slim3-json-transformer",
     "version": "2.5.0",
     "type": "library",
     "description": "Slim 3 Eloquent JSON API Transformer Package",
