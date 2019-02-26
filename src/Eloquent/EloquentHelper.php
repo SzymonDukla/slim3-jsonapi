@@ -4,7 +4,7 @@ namespace SzymonDukla\Slim3\JsonApi\Eloquent;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use NilPortugues\Api\JsonApi\Http\Request\Request;
+use AmaranthCloud\Api\JsonApi\Http\Request\Request;
 use SzymonDukla\Slim3\JsonApi\JsonApiSerializer;
 
 /**

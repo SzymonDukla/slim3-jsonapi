@@ -8,10 +8,10 @@
  * file that was distributed with this source code.
  */
 
-namespace NilPortugues\Tests\App\Controller;
+namespace AmaranthCloud\Tests\App\Controller;
 
-use NilPortugues\Laravel5\JsonApi\Controller\JsonApiController;
-use NilPortugues\Tests\App\Models\Orders;
+use AmaranthCloud\Laravel5\JsonApi\Controller\JsonApiController;
+use AmaranthCloud\Tests\App\Models\Orders;
 
 class OrdersController extends JsonApiController
 {

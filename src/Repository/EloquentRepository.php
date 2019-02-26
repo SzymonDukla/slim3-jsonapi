@@ -3,7 +3,7 @@
 namespace SzymonDukla\Slim3\JsonApi\Repository;
 
 use Illuminate\Database\Eloquent\Model;
-use NilPortugues\Foundation\Infrastructure\Model\Repository\Eloquent\EloquentRepository as Repository;
+use AmaranthCloud\Foundation\Infrastructure\Model\Repository\Eloquent\EloquentRepository as Repository;
 
 /**
  * Class Repository.

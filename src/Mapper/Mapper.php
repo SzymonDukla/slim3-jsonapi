@@ -2,12 +2,12 @@
 
 namespace SzymonDukla\Slim3\JsonApi\Mapper;
 
-class Mapper extends \NilPortugues\Api\Mapping\Mapper
+class Mapper extends \AmaranthCloud\Api\Mapping\Mapper
 {
     /**
      * @param string|array $mappedClass
      *
-     * @return \NilPortugues\Api\Mapping\Mapping
+     * @return \AmaranthCloud\Api\Mapping\Mapping
      */
     protected function buildMapping($mappedClass)
     {

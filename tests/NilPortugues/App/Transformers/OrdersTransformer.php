@@ -8,10 +8,10 @@
  * file that was distributed with this source code.
  */
 
-namespace NilPortugues\Tests\App\Transformers;
+namespace AmaranthCloud\Tests\App\Transformers;
 
-use NilPortugues\Api\Mappings\JsonApiMapping;
-use NilPortugues\Tests\App\Models\Orders;
+use AmaranthCloud\Api\Mappings\JsonApiMapping;
+use AmaranthCloud\Tests\App\Models\Orders;
 
 /**
  * Class OrdersTransformer.

@@ -1,6 +1,6 @@
 <?php
 
-namespace NilPortugues\Tests\App\Models;
+namespace AmaranthCloud\Tests\App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace NilPortugues\Tests\App\Providers;
+namespace AmaranthCloud\Tests\App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 

@@ -67,7 +67,7 @@ $container[SzymonDukla\Slim3\JsonApi\JsonApiSerializer::class] = function (Conta
     $mappingHelper = new SzymonDukla\Slim3\JsonApi\Mapper\MappingHelper();
     $parsedRoutes = $mappingHelper->parseRoutes($mapper);
 
-    $transformer = new NilPortugues\Api\JsonApi\JsonApiTransformer($parsedRoutes);
+    $transformer = new AmaranthCloud\Api\JsonApi\JsonApiTransformer($parsedRoutes);
 
     return new SzymonDukla\Slim3\JsonApi\JsonApiSerializer($transformer);
 };

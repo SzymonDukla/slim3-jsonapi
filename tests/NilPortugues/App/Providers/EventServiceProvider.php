@@ -1,6 +1,6 @@
 <?php
 
-namespace NilPortugues\Tests\App\Providers;
+namespace AmaranthCloud\Tests\App\Providers;
 
 use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;

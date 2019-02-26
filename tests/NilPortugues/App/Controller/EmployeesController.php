@@ -8,18 +8,18 @@
  * file that was distributed with this source code.
  */
 
-namespace NilPortugues\Tests\App\Controller;
+namespace AmaranthCloud\Tests\App\Controller;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-use NilPortugues\Api\JsonApi\Http\Factory\RequestFactory;
-use NilPortugues\Api\JsonApi\Server\Actions\ListResource;
-use NilPortugues\Api\JsonApi\Server\Errors\Error;
-use NilPortugues\Api\JsonApi\Server\Errors\ErrorBag;
-use NilPortugues\Laravel5\JsonApi\Controller\JsonApiController;
-use NilPortugues\Laravel5\JsonApi\Eloquent\EloquentHelper;
-use NilPortugues\Tests\App\Models\Employees;
-use NilPortugues\Tests\App\Models\Orders;
+use AmaranthCloud\Api\JsonApi\Http\Factory\RequestFactory;
+use AmaranthCloud\Api\JsonApi\Server\Actions\ListResource;
+use AmaranthCloud\Api\JsonApi\Server\Errors\Error;
+use AmaranthCloud\Api\JsonApi\Server\Errors\ErrorBag;
+use AmaranthCloud\Laravel5\JsonApi\Controller\JsonApiController;
+use AmaranthCloud\Laravel5\JsonApi\Eloquent\EloquentHelper;
+use AmaranthCloud\Tests\App\Models\Employees;
+use AmaranthCloud\Tests\App\Models\Orders;
 
 /**
  * Class EmployeeController.

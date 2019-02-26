@@ -1,6 +1,6 @@
 <?php
 
-namespace NilPortugues\Tests\App\Exceptions;
+namespace AmaranthCloud\Tests\App\Exceptions;
 
 use Exception;
 use Illuminate\Auth\Access\AuthorizationException;

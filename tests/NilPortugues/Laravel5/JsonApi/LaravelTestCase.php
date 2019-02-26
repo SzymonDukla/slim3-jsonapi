@@ -8,15 +8,15 @@
  * file that was distributed with this source code.
  */
 
-namespace NilPortugues\Tests\Laravel5\JsonApi;
+namespace AmaranthCloud\Tests\Laravel5\JsonApi;
 
 use Illuminate\Events\Dispatcher;
 use Illuminate\Filesystem\ClassFinder;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Routing\Router;
-use NilPortugues\Tests\App\Transformers\EmployeesTransformer;
-use NilPortugues\Tests\App\Transformers\OrdersTransformer;
+use AmaranthCloud\Tests\App\Transformers\EmployeesTransformer;
+use AmaranthCloud\Tests\App\Transformers\OrdersTransformer;
 use Psr\Log\NullLogger;
 
 /**
@@ -53,7 +53,7 @@ class LaravelTestCase extends \Illuminate\Foundation\Testing\TestCase
         $fileSystem = new Filesystem();
         $classFinder = new ClassFinder();
 
-        foreach ($fileSystem->files(__DIR__.'/../../../../tests/NilPortugues/App/Migrations') as $file) {
+        foreach ($fileSystem->files(__DIR__.'/../../../../tests/AmaranthCloud/App/Migrations') as $file) {
             $fileSystem->requireOnce($file);
             $migrationClass = $classFinder->findClass($file);
             (new $migrationClass())->down();
@@ -73,8 +73,8 @@ class LaravelTestCase extends \Illuminate\Foundation\Testing\TestCase
 
         $this->setUpHttpKernel($app);
         $app->register(\Illuminate\Database\DatabaseServiceProvider::class);
-        $app->register(\NilPortugues\Tests\App\Providers\RouteServiceProvider::class);
-        $app->register(\NilPortugues\Laravel5\JsonApi\Laravel5JsonApiServiceProvider::class);
+        $app->register(\AmaranthCloud\Tests\App\Providers\RouteServiceProvider::class);
+        $app->register(\AmaranthCloud\Laravel5\JsonApi\Laravel5JsonApiServiceProvider::class);
 
         return $app;
     }
@@ -96,7 +96,7 @@ class LaravelTestCase extends \Illuminate\Foundation\Testing\TestCase
     {
         $app->instance('request', (new \Illuminate\Http\Request())->instance());
         $app->make('Illuminate\Foundation\Http\Kernel', [$app, $this->getRouter()])->bootstrap();
-        $app->bind('Illuminate\Contracts\Debug\ExceptionHandler', new \NilPortugues\Tests\App\Exceptions\Handler(new NullLogger()));
+        $app->bind('Illuminate\Contracts\Debug\ExceptionHandler', new \AmaranthCloud\Tests\App\Exceptions\Handler(new NullLogger()));
     }
 
     /**

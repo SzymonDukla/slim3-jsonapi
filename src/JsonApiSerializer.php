@@ -2,8 +2,8 @@
 
 namespace SzymonDukla\Slim3\JsonApi;
 
-use NilPortugues\Serializer\Drivers\Eloquent\EloquentDriver;
-use NilPortugues\Api\JsonApi\JsonApiSerializer as Serializer;
+use AmaranthCloud\Serializer\Drivers\Eloquent\EloquentDriver;
+use AmaranthCloud\Api\JsonApi\JsonApiSerializer as Serializer;
 
 /**
  * Class JsonApiSerializer.

@@ -2,7 +2,7 @@
 
 namespace SzymonDukla\Slim3\JsonApi\Mapper;
 
-use NilPortugues\Api\Mapping\Mapping;
+use AmaranthCloud\Api\Mapping\Mapping;
 use ReflectionClass;
 
 class MappingHelper

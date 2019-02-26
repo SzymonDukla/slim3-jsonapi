@@ -1,6 +1,6 @@
 <?php
 
-namespace NilPortugues\Tests\App\Providers;
+namespace AmaranthCloud\Tests\App\Providers;
 
 use Illuminate\Routing\Router;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
@@ -14,7 +14,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    protected $namespace = 'NilPortugues\Tests\App\Controller';
+    protected $namespace = 'AmaranthCloud\Tests\App\Controller';
 
     /**
      * Define your route model bindings, pattern filters, etc.

@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace NilPortugues\Tests\Laravel5\JsonApi;
+namespace AmaranthCloud\Tests\Laravel5\JsonApi;
 
 /**
  * @runTestsInSeparateProcesses
@@ -87,10 +87,10 @@ JSON;
     "data": {
         "type": "employee",
         "attributes": {
-            "company": "NilPortugues.com",
+            "company": "AmaranthApp.com",
             "surname": "Portugués",
             "first_name": "Nil",
-            "email_address": "nilportugues@localhost",
+            "email_address": "amaranthapp@localhost",
             "job_title": "Senior Web Developer",
             "business_phone": "(123)555-0100",
             "home_phone": "(123)555-0102",
@@ -132,10 +132,10 @@ JSON;
     "data": {
         "type": "employee",
         "attributes": {
-            "company": "NilPortugues.com",
+            "company": "AmaranthApp.com",
             "surname": "Portugués",
             "first_name": "Nil",
-            "email_address": "nilportugues@localhost",
+            "email_address": "amaranthapp@localhost",
             "job_title": "Web Developer",
             "business_phone": "(123)555-0100",
             "home_phone": "(123)555-0102",
@@ -207,10 +207,10 @@ JSON;
     "data": {
         "type": "employee",
         "attributes": {
-            "company": "NilPortugues.com",
+            "company": "AmaranthApp.com",
             "surname": "Portugués",
             "first_name": "Nil",
-            "email_address": "nilportugues@localhost",
+            "email_address": "amaranthapp@localhost",
             "job_title": "Web Developer",
             "business_phone": "(123)555-0100",
             "home_phone": "(123)555-0102",
@@ -269,10 +269,10 @@ JSON;
     "type": "employee",
     "id": 1000,
     "attributes": {
-          "company": "NilPortugues.com",
+          "company": "AmaranthApp.com",
           "surname": "Portugués",
           "first_name": "Nil",
-          "email_address": "nilportugues@localhost",
+          "email_address": "amaranthapp@localhost",
           "job_title": "Full Stack Web Developer",
           "business_phone": "(123)555-0100",
           "home_phone": "(123)555-0102",

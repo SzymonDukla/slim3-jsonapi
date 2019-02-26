@@ -12,14 +12,14 @@ namespace SzymonDukla\Slim3\JsonApi\Mapper;
 
 use Illuminate\Database\Capsule\Manager;
 use Illuminate\Database\Eloquent\Model;
-use NilPortugues\Api\Mapping\Mapping;
-use NilPortugues\Api\Mapping\MappingException;
+use AmaranthCloud\Api\Mapping\Mapping;
+use AmaranthCloud\Api\Mapping\MappingException;
 use ReflectionClass;
 
 /**
  * Class MappingFactory.
  */
-class MappingFactory extends \NilPortugues\Api\Mapping\MappingFactory
+class MappingFactory extends \AmaranthCloud\Api\Mapping\MappingFactory
 {
     /**
      * @var array

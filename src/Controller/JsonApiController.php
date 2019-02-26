@@ -3,13 +3,13 @@
 namespace SzymonDukla\Slim3\JsonApi\Controller;
 
 use Carbon\Carbon;
-use NilPortugues\Api\JsonApi\Http\Request\Request;
-use NilPortugues\Api\JsonApi\Server\Actions\CreateResource;
-use NilPortugues\Api\JsonApi\Server\Actions\DeleteResource;
-use NilPortugues\Api\JsonApi\Server\Actions\GetResource;
-use NilPortugues\Api\JsonApi\Server\Actions\ListResource;
-use NilPortugues\Api\JsonApi\Server\Actions\PatchResource;
-use NilPortugues\Api\JsonApi\Server\Actions\PutResource;
+use AmaranthCloud\Api\JsonApi\Http\Request\Request;
+use AmaranthCloud\Api\JsonApi\Server\Actions\CreateResource;
+use AmaranthCloud\Api\JsonApi\Server\Actions\DeleteResource;
+use AmaranthCloud\Api\JsonApi\Server\Actions\GetResource;
+use AmaranthCloud\Api\JsonApi\Server\Actions\ListResource;
+use AmaranthCloud\Api\JsonApi\Server\Actions\PatchResource;
+use AmaranthCloud\Api\JsonApi\Server\Actions\PutResource;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Http\Response;
