@@ -29,7 +29,7 @@
 Use [Composer](https://getcomposer.org) to install the package:
 
 ```
-composer require szymondukla/slim3-jsonapi
+composer require szymondukla/slim3-json-transformer
 ```
 
 ## Configuration for Slim 3 and Eloquent
